@@ -20,7 +20,7 @@ now=datetime.now()
 #Converts to dd-mm-YY_H-M-S
 dt_string=now.strftime("%d-%m-%Y_%H-%M-%S")
 #Data files will be saved as customname_{dt_string}
-CSV_FILEPATH="../../data/NDI_data/ndi_headpose_" #Default Name
+CSV_FILEPATH="Users/Randy/Documents/Github/NDI_DataLogger/ParticipantData" #Default Name
 CSV_FILEPATH=CSV_FILEPATH+dt_string+".csv"
 
 ROM_FILEPATH="../resources/ecm.rom" #Default .rom filepath
