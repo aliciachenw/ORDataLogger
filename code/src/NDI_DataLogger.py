@@ -1,9 +1,7 @@
 '''
-Description: Code for an NDI data logger GUI. Reads in tool(s) quaternion (or rotation/translation) amd time stamps it for later syncing .
-Author: Alexandre Banks Gadbois
-Date: July 11th, 2023
-Affiliation: UBC Robotics and Control Laboratory
-
+Description: Code for an NDI data logger GUI. Reads in tool(s) pose in quaternion or rotation/translation and timestamps.
+Author: Alexandre Banks (Modified by Randy Moore)
+Date: April 08, 2024
 '''
 #----------------------<Module Imports>------------------------
 from tabnanny import check
@@ -20,7 +18,7 @@ now=datetime.now()
 #Converts to dd-mm-YY_H-M-S
 dt_string=now.strftime("%d-%m-%Y_%H-%M-%S")
 #Data files will be saved as customname_{dt_string}
-CSV_FILEPATH="Users/Randy/Documents/Github/NDI_DataLogger/ParticipantData" #Default Name
+CSV_FILEPATH="../ParticipantData" #Default Name
 CSV_FILEPATH=CSV_FILEPATH+dt_string+".csv"
 
 ROM_FILEPATH="../resources/ecm.rom" #Default .rom filepath
