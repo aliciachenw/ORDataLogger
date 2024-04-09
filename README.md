@@ -16,7 +16,7 @@ Tool ID, Timestamp, Frame #, data columns, Tracking Quality
 
 **Timestamp**: system time
 
-**Frame #**: the frame returned by the NDI Polaris API (**Note: use the frame number and first timestamp for synchronization.** The frame number is incremented by 1 at a constant rate of 60 Hz )
+**Frame #**: the frame returned by the NDI Polaris API (**Note: use the frame number and first timestamp for synchronization.** The frame number is incremented by 1 at a constant rate of 30 Hz )
 
 **data columns**: Either in quaternion format (Tx,Ty,Tz,q0,qx,qy,qz) or translation/rotation format (Tx,Ty,Tz,R00,R01,R02,R10,R11,R12,R20,R21,R22)
 
