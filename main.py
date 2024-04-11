@@ -10,6 +10,7 @@ import os.path
 import threading
 import cv2
 import time
+# import multiprocessing ## can have some memory issue with displaying
 
 def dummy_thread_func():
     while True:
@@ -31,15 +32,15 @@ if __name__ == '__main__':
     ndi_thread = threading.Thread(target=dummy_thread_func, args=(), daemon=True)
     video_thread = threading.Thread(target=video_logger.capture, args=(), daemon=True)
     display_thread = threading.Thread(target=video_logger.display, args=(), daemon=True)
+
+
     ndi_thread.start()
     video_thread.start()
     display_thread.start()
 
-    # ndi_thread.join()
-    # video_thread.join()
-    # display_thread.join()
     while not video_logger.finish:
         if video_logger.finish:
+            
             ndi_thread.join()
             video_thread.join()
             display_thread.join()

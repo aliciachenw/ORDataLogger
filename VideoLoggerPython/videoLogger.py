@@ -1,6 +1,7 @@
 import cv2
 from datetime import datetime
 import csv
+import time
 
 ### Change the following parameters according to hardware###
 videoPortIndex = 0 # --> keep modifying this integer (+1) if you do not see the video stream 
@@ -19,11 +20,12 @@ class VideoRecordWrapper():
         self.filename = 'Recording_' + timestamp + '.avi'
         self.timestamp_filename = 'Recording_' + timestamp + '.csv'
         self.ret = False
+
+
         with open(self.timestamp_filename, 'w', newline='') as file_object:
             writer_object = csv.writer(file_object)
             writer_object.writerow(['Timestamp'])
             file_object.close()
-        self.thread = None
         self.finish = False
 
     def start_recording(self):
@@ -41,22 +43,20 @@ class VideoRecordWrapper():
 
         self.out = cv2.VideoWriter(self.filename, self.fourcc, recording_framerate, (height,  width))
         print("success in capturing video, video shape:", frame.shape)
-        # self.thread = threading.Thread(target=self.update, args=())
+
+
     def capture(self):
         # Capture frame-by-frame
-        while True:
+        while not self.finish:
             try:
                 self.ret, self.frame = self.cap.read()
+                timestamp = datetime.now().timestamp()
                 # if frame is read correctly ret is True
                 if not self.ret:
-                    print("Can't receive frame (stream end?)")
-                    # exit()
-                # Display the resulting frame
-                # cv.imshow('frame', frame)
-                # write the flipped frame
+                    print("Can't receive frame")
                 else:
+                    # Display the resulting frame
                     self.out.write(self.frame)
-                    timestamp = datetime.now().timestamp()
                     # print("receive frame:", timestamp)
                     with open(self.timestamp_filename,'a',newline='') as file_object:
                         writer_object = csv.writer(file_object)
@@ -64,6 +64,7 @@ class VideoRecordWrapper():
                         file_object.close()
             except:
                 pass
+            time.sleep(1 / recording_framerate)
 
 
     def end_recording(self):

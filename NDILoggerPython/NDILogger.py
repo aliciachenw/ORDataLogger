@@ -125,9 +125,8 @@ class NDITrackingWrapper():
         
     def recording(self):
         #Setting Up NDI Device and Tracking
-        while True:
-            if self.tracking:
-                NDI_dat=self.tracker.get_frame()
-                self.save_dat(NDI_dat)
+        while self.tracking:
+            NDI_dat=self.tracker.get_frame()
+            self.save_dat(NDI_dat)
             time.sleep(SAMPLE_PERIOD)
      
