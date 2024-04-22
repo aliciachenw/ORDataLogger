@@ -32,8 +32,7 @@ def get_filename():
     return csv_filepath
 
 def get_rom_filepath():
-    pass
-    ROM_FILEPATH="NDILoggerPython/resources/cross_probe.rom" #Default .rom filepath
+    ROM_FILEPATH="NDILoggerPython/resources/HoloTORSUS_v2.rom" #Default .rom filepath
 
     return ROM_FILEPATH
 

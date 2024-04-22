@@ -4,7 +4,7 @@ import csv
 import time
 
 ### Change the following parameters according to hardware###
-videoPortIndex = 0 # --> keep modifying this integer (+1) if you do not see the video stream 
+videoPortIndex = 1 # --> keep modifying this integer (+1) if you do not see the video stream 
 recording_framerate = 30.0
 #######################################
 
