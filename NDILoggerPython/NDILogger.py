@@ -25,9 +25,9 @@ SAMPLE_PERIOD = 1.0 / SAMPLE_RATE
 def get_filename():
     now = datetime.now()
     #Converts to dd-mm-YY_H-M-S
-    dt_string = now.strftime("%d-%m-%Y_%H-%M-%S")
+    dt_string = now.strftime("%d_%m_%Y_%H_%M_%S")
     #Data files will be saved as customname_{dt_string}
-    csv_filepath = "ParticipantData" #Default Name
+    csv_filepath = "ParticipantData_" #Default Name
     csv_filepath = csv_filepath + dt_string + ".csv"
     return csv_filepath
 
@@ -52,7 +52,7 @@ class NDITrackingWrapper():
             writer_object=csv.writer(file_object)
             if self.use_quaternions: #Using quaternion format for the tool
                 #CSV Header
-                writer_object.writerow(["Tool ID","Timestamp","Frame #","Tx","Ty","Tz","Q0","Qx","Qy","Qz","Tracking Quality"])
+                writer_object.writerow(["Tool ID","Timestamp","Frame #","Q0","Qx","Qy","Qz", "Tx","Ty","Tz", "Tracking Quality"])
             else: #Using rotation/translation format
                 #CSV Header
                 writer_object.writerow(["Tool ID","Timestamp","Frame #","Tx","Ty","Tz","R00","R01","R02","R10","R11","R12","R20","R21","R22","Tracking Quality"])
