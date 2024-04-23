@@ -1,6 +1,6 @@
 import numpy as np
 
-def timesync(timeframe1, timeframe2, threshold=1e-2):
+def timesync(timeframe1, timeframe2, threshold=1):
     """
     Function to synchronize two timeframes
     """

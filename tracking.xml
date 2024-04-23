@@ -1,0 +1,27 @@
+<PlusConfiguration version="2.1">
+
+  <CoordinateDefinitions>
+    <Transform From="StylusTip" To="Stylus"
+      Matrix="
+      1 0 0 -176.404 
+      0 -1 0 -0.754891 
+      0 0 -1 -18.8071 
+      0 0 0 1"
+      Error="0.38894" Date="20220918_1026" />
+    <Transform From="Image" To="Reference"
+      Matrix="
+        1 0.0 0.0 0.0
+        0.0 1 0.0 0.0
+        0.0 0.0 1 0.0        
+        0 0 0 1" />
+    <Transform From="Image" To="Probe"
+      Matrix="
+      0.18494063121279927 0.013394115195971053 0.022865316502723047 -23.386 
+      -0.011308485519023498 -0.15719459248181666 -0.005210826964272672 -108.578 
+      0.03945548674196371 0.010355953166042417 -0.10867027450405792 13.0809
+      0.0 0.0 0.0 1.0" />
+  </CoordinateDefinitions>
+
+
+
+</PlusConfiguration>

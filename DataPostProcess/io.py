@@ -16,6 +16,9 @@ def read_video(video_path, grayscale=False):
             break
         if grayscale:
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            if len(frames) == 0:
+                print("Image size:", frame.shape)
+                cv2.imwrite("test.png", frame)
         frames.append(frame)
     cap.release()
     print("Video loaded with", len(frames), "frames")
@@ -43,11 +46,11 @@ def read_csv(csv_path):
 def write_igs(frames, transform, frame_timestamps, matches, output_path):
 
     # get data
-    frames = frames[:100]
+    frames = frames[:300]
     print("Image size:", frames[0].shape)
     H, W = frames[0].shape
     sequence_length = len(frames)
-    tracking_transform = 'ProbeToTrackerTransform'
+    FIX = 'ProbeToTrackerTransform'
     # get basic metadata
     curr_frame = []
     metadata = {}
@@ -73,30 +76,33 @@ def write_igs(frames, transform, frame_timestamps, matches, output_path):
 
     for i in range(sequence_length):
         
-        tracker_status = 'Seq_Frame' + str(i).zfill(4) + '_' + tracking_transform + 'Status'
+        tracker_status = 'Seq_Frame' + str(i).zfill(4) + '_' + FIX + 'Status'
         image_status = 'Seq_Frame' + str(i).zfill(4) + '_ImageStatus'
-        tracking_transform = 'Seq_Frame' + str(i).zfill(4) + '_' + tracking_transform
+        tracking_transform = 'Seq_Frame' + str(i).zfill(4) + '_' + FIX
         timestamp = 'Seq_Frame' + str(i).zfill(4) + '_Timestamp'
-
+        # print(matches)
+        # exit()
         if i in matches[:,0]: # have match
             idx = np.argwhere(matches[:,0] == i)[0][0]
+            print(idx)
             j = matches[idx, 1]
+            print(transform[j])
             if np.isnan(transform[j, 3]):
                 metadata[tracker_status] = 'MISSING'
                 metadata[image_status] = 'OK'
                 metadata[tracking_transform] = "-nan(ind) -nan(ind) -nan(ind) 0 -nan(ind) -nan(ind) -nan(ind) 0 -nan(ind) -nan(ind) -nan(ind) 0 0 0 0 1"
-                metadata[timestamp] = str(frame_timestamps[i] - frame_timestamps[0])
+                metadata[timestamp] = str(frame_timestamps[i,0] - frame_timestamps[0,0])
             else:
                 metadata[tracker_status] = 'OK'
                 metadata[image_status] = 'OK'
                 metadata[tracking_transform] = cvt_transform(transform[j])
-                metadata[timestamp] = str(frame_timestamps[i] - frame_timestamps[0])
+                metadata[timestamp] = str(frame_timestamps[i,0] - frame_timestamps[0,0])
         
         else:
             metadata[tracker_status] = 'MISSING'
             metadata[image_status] = 'OK'
             metadata[tracking_transform] = "-nan(ind) -nan(ind) -nan(ind) 0 -nan(ind) -nan(ind) -nan(ind) 0 -nan(ind) -nan(ind) -nan(ind) 0 0 0 0 1"
-            metadata[timestamp] = str(frame_timestamps[i] - frame_timestamps[0])
+            metadata[timestamp] = str(frame_timestamps[i,0] - frame_timestamps[0,0])
 
     # write to file
     image_npy = np.array(frames).astype(np.uint8) # S, W, H
