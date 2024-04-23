@@ -14,8 +14,12 @@ calib_h = 727
 curr_w = 227
 curr_h = 390
 
+# new_sx = calib_w * s[0] / curr_w
+# new_sy = calib_h * s[1] / curr_h
+
 new_sx = calib_w * s[0] / curr_w
-new_sy = calib_h * s[1] / curr_h
+new_sy = 65 / curr_h
+new_sx = new_sy
 
 new_s = np.array([new_sx, new_sy, (new_sx + new_sy) / 2])
 # get the rotation matrix

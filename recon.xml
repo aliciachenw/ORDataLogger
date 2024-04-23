@@ -2,7 +2,7 @@
 
   <VolumeReconstruction OutputSpacing="0.2 0.2 0.2"
     Interpolation="LINEAR" Optimization="FULL"
-    CompoundingMode="MAXIMUM" FillHoles="OFF">
+    CompoundingMode="MAXIMUM" FillHoles="ON">
     <HoleFilling>
       <HoleFillingElement
         Type="STICK"     

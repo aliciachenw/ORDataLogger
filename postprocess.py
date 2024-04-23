@@ -41,9 +41,13 @@ def process(video_path, output_path, args):
         with open(args.config, 'r') as f:
             config = json.load(f)
         frames = crop_video(frames, config['x'], config['y'], config['w'], config['h'])
-    
+
+        sequence_list = config['sequenceList']
+        print("Sequence list:", sequence_list)
+    else:
+        sequence_list = None
     # write the igs file
-    write_igs(frames, tracking, timeframe, matchs, output_path)
+    write_igs(frames, tracking, timeframe, matchs, output_path, sequence_list)
 
 
 if __name__ == '__main__':
