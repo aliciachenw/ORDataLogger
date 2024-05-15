@@ -25,9 +25,9 @@ SAMPLE_PERIOD = 1.0 / SAMPLE_RATE
 def get_filename():
     now = datetime.now()
     #Converts to dd-mm-YY_H-M-S
-    dt_string = now.strftime("%d-%m-%Y_%H-%M-%S")
+    dt_string = now.strftime("%d_%m_%Y_%H_%M_%S")
     #Data files will be saved as customname_{dt_string}
-    csv_filepath = "ParticipantData" #Default Name
+    csv_filepath = "Tracking_" #Default Name
     csv_filepath = csv_filepath + dt_string + ".csv"
     return csv_filepath
 

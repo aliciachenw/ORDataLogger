@@ -21,15 +21,15 @@ if __name__ == '__main__':
     #------------------------<Creating GUI>-----------------------
     #Creates the GUI
 
-    ndi_logger = NDITrackingWrapper()
+    # ndi_logger = NDITrackingWrapper()
     video_logger = VideoRecordWrapper()
 
     # init
-    ndi_logger.start_recording()
+    # ndi_logger.start_recording()
     video_logger.start_recording()
 
-    ndi_thread = threading.Thread(target=ndi_logger.recording, args=(), daemon=True)
-    # ndi_thread = threading.Thread(target=dummy_thread_func, args=(), daemon=True)
+    # ndi_thread = threading.Thread(target=ndi_logger.recording, args=(), daemon=True)
+    ndi_thread = threading.Thread(target=dummy_thread_func, args=(), daemon=True)
     video_thread = threading.Thread(target=video_logger.capture, args=(), daemon=True)
     display_thread = threading.Thread(target=video_logger.display, args=(), daemon=True)
 
@@ -44,6 +44,6 @@ if __name__ == '__main__':
             ndi_thread.join()
             video_thread.join()
             display_thread.join()
-            ndi_logger.end_recording()
+            # ndi_logger.end_recording()
             exit()
         time.sleep(0.5)
