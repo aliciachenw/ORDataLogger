@@ -163,3 +163,8 @@ cython_debug/
 *.crm
 *.rom
 *.avi
+*.mha
+*.json
+*.png
+*.nii
+*.nii.gz

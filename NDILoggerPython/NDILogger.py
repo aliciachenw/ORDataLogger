@@ -52,7 +52,7 @@ class NDITrackingWrapper():
             writer_object=csv.writer(file_object)
             if self.use_quaternions: #Using quaternion format for the tool
                 #CSV Header
-                writer_object.writerow(["Tool ID","Timestamp","Frame #","Tx","Ty","Tz","Q0","Qx","Qy","Qz","Tracking Quality"])
+                writer_object.writerow(["Tool ID","Timestamp","Frame #","Q0","Qx","Qy","Qz", "Tx","Ty","Tz", "Tracking Quality"])
             else: #Using rotation/translation format
                 #CSV Header
                 writer_object.writerow(["Tool ID","Timestamp","Frame #","Tx","Ty","Tz","R00","R01","R02","R10","R11","R12","R20","R21","R22","Tracking Quality"])
