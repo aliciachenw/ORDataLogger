@@ -96,7 +96,7 @@ class NDITrackingWrapper():
                 writer_object=csv.writer(file_object)
                 writer_object.writerow(data_formated)
                 file_object.close()
-            print(data_formated)
+            print(data_formated, end='\r')
             
     # def update_quaternion(self):
     #     self.use_quaternions = True

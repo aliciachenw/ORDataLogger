@@ -4,7 +4,7 @@ import csv
 import time
 
 ### Change the following parameters according to hardware###
-videoPortIndex = 0 # --> keep modifying this integer (+1) if you do not see the video stream 
+videoPortIndex = 0# --> keep modifying this integer (+1) if you do not see the video stream 
 recording_framerate = 30.0
 #######################################
 
@@ -81,9 +81,9 @@ class VideoRecordWrapper():
             try:
                 if self.ret:
                     cv2.imshow("US", self.frame)
-                    if cv2.waitKey(1) & 0xFF == ord('q'):
+                    if cv2.waitKey(0) & 0xFF == ord('q'):
                         break
-                    if cv2.waitKey(1) & 0xFF == ord('c'):
+                    elif cv2.waitKey(0) & 0xFF == ord('c'):
                         if self.recording:
                             print("change flag to not record!")
                         else:
