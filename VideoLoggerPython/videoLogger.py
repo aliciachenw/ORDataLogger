@@ -78,19 +78,27 @@ class VideoRecordWrapper():
 
     def display(self):
         while True:
-            try:
-                if self.ret:
-                    cv2.imshow("US", self.frame)
-                    if cv2.waitKey(0) & 0xFF == ord('q'):
-                        break
-                    elif cv2.waitKey(0) & 0xFF == ord('c'):
-                        if self.recording:
-                            print("change flag to not record!")
-                        else:
-                            print("change flag to record!")
-                        self.recording = not self.recording
-            except:
-                pass
+            if self.ret:
+                cv2.imshow("US", self.frame)
+                key = cv2.waitKey(1)
+                if key == ord('q'):
+                    break
+                elif key == ord('c'):
+                    if self.recording:
+                        print("change flag to not record!")
+                    else:
+                        print("change flag to record!")
+                    self.recording = not self.recording
+                # if cv2.waitKey(1) & 0xFF == ord('q'):
+                #     break
+                # elif cv2.waitKey(1) & 0xFF == ord('c'):
+                #     if self.recording:
+                #         print("change flag to not record!")
+                #     else:
+                #         print("change flag to record!")
+                #     self.recording = not self.recording
+            time.sleep(1 / recording_framerate)
+
         self.end_recording()
 
     

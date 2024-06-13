@@ -12,6 +12,9 @@ import cv2
 import time
 # import multiprocessing ## can have some memory issue with displaying
 
+record_video_flag = True
+dummy_ndi_flag = True
+
 def dummy_thread_func():
     while True:
         print("lollollol", end='\r')
@@ -20,30 +23,45 @@ def dummy_thread_func():
 if __name__ == '__main__':
     #------------------------<Creating GUI>-----------------------
     #Creates the GUI
-
-    ndi_logger = NDITrackingWrapper()
-    video_logger = VideoRecordWrapper()
+    
+    if not dummy_ndi_flag:
+        ndi_logger = NDITrackingWrapper()
+    if record_video_flag:
+        video_logger = VideoRecordWrapper()
 
     # init
-    ndi_logger.start_recording()
-    video_logger.start_recording()
+    if not dummy_ndi_flag:
+        ndi_logger.start_recording()
+    if record_video_flag:
+        video_logger.start_recording()
 
-    ndi_thread = threading.Thread(target=ndi_logger.recording, args=(), daemon=True)
-    # ndi_thread = threading.Thread(target=dummy_thread_func, args=(), daemon=True)
-    video_thread = threading.Thread(target=video_logger.capture, args=(), daemon=True)
-    display_thread = threading.Thread(target=video_logger.display, args=(), daemon=True)
+    if not dummy_ndi_flag:
+        ndi_thread = threading.Thread(target=ndi_logger.recording, args=(), daemon=True)
+    else:
+        ndi_thread = threading.Thread(target=dummy_thread_func, args=(), daemon=True)
+
+    if record_video_flag:
+        video_thread = threading.Thread(target=video_logger.capture, args=(), daemon=True)
+        display_thread = threading.Thread(target=video_logger.display, args=(), daemon=True)
 
 
     ndi_thread.start()
-    video_thread.start()
-    display_thread.start()
+    if record_video_flag:
+        video_thread.start()
+        display_thread.start()
 
-    while not video_logger.finish:
-        if video_logger.finish:
-            
-            ndi_thread.join()
-            video_thread.join()
-            display_thread.join()
-            ndi_logger.end_recording()
-            exit()
-        time.sleep(0.5)
+    if record_video_flag:
+        while True:
+            time.sleep(0.5)
+
+    else:
+        while not video_logger.finish:
+            if video_logger.finish:
+                
+                ndi_thread.join()
+                video_thread.join()
+                display_thread.join()
+                if not dummy_ndi_flag:
+                    ndi_logger.end_recording()
+                exit()
+            time.sleep(0.5)
