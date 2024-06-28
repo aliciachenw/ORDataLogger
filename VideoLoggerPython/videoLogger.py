@@ -4,7 +4,7 @@ import csv
 import time
 
 ### Change the following parameters according to hardware###
-videoPortIndex = 0# --> keep modifying this integer (+1) if you do not see the video stream 
+# videoPortIndex = 0# --> keep modifying this integer (+1) if you do not see the video stream 
 recording_framerate = 30.0
 #######################################
 
@@ -12,7 +12,7 @@ recording_framerate = 30.0
 
 class VideoRecordWrapper():
 
-    def __init__(self):
+    def __init__(self, videoPortIndex):
         
         timestamp = datetime.now().strftime("%d_%m_%Y_%H_%M_%S")
         # Define the codec and create VideoWriter object
@@ -21,6 +21,7 @@ class VideoRecordWrapper():
         self.timestamp_filename = 'Recording_' + timestamp + '.csv'
         self.ret = False
         self.recording = False
+        self.videoPortIndex = videoPortIndex
 
 
         with open(self.timestamp_filename, 'w', newline='') as file_object:
@@ -30,7 +31,7 @@ class VideoRecordWrapper():
         self.finish = False
 
     def start_recording(self):
-        self.cap = cv2.VideoCapture(videoPortIndex)
+        self.cap = cv2.VideoCapture(self.videoPortIndex)
         if not self.cap.isOpened():
             print("Cannot capture video input... exiting")
             exit()

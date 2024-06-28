@@ -168,3 +168,4 @@ cython_debug/
 *.png
 *.nii
 *.nii.gz
+atracsys/
