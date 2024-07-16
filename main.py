@@ -24,8 +24,8 @@ if __name__ == '__main__':
     #Creates the GUI
     
     parser = argparse.ArgumentParser()
-    parser.add_argument('--tracker', type=str)
-    parser.add_argument('--camera', type=int, default=0)
+    parser.add_argument('--tracker', type=str, default='none', choices=['ndi', 'sprytrack', 'none'])
+    parser.add_argument('--camera', type=int, default=-1)
 
     args = parser.parse_args()
 
