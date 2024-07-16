@@ -8,7 +8,7 @@ import numpy as np
 
 
 
-def reconstruct_3D_US(filename, save_path='.'):
+def reconstruct_3D_US(filename, save_path='.', auto_PCA=False):
 
     # read raw image file
     filename_split = os.path.split(filename)
@@ -27,12 +27,14 @@ def reconstruct_3D_US(filename, save_path='.'):
     reconstruct_filter.calculatePoseForUSImages()
 
     # Set time frames for images that can be cointaned in the voxel array
-    reconstruct_filter.setValidFramesForVoxelArray(voxFrames='all')
+    reconstruct_filter.setValidFramesForVoxelArray(voxFrames='auto') # if use auto need to make sure input frames are all visible!
 
     # Calculate convenient pose for the voxel array
     #convR = T
-    # convR = 'auto_PCA'
-    convR = np.eye(4)
+    if auto_PCA:
+        convR = 'auto_PCA'
+    else:
+        convR = np.eye(4)
     reconstruct_filter.calculateConvPose(convR)
 
     # Set scale factors -> fxyz is pixel/mm
@@ -68,10 +70,11 @@ if __name__ == '__main__':
     argparser = argparse.ArgumentParser()
     argparser.add_argument('--input', type=str, required=True)
     argparser.add_argument('--output', type=str, required=True)
+    argparser.add_argument('--auto_PCA', action='store_true') # TODO: PCA generates weird results! Need to fix
 
     args = argparser.parse_args()
 
     input_path = args.input
     output_path = args.output
 
-    reconstruct_3D_US(input_path, output_path)
+    reconstruct_3D_US(input_path, output_path, args.auto_PCA)

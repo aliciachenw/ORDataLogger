@@ -15,10 +15,19 @@ def read_sequence(data_path, tracking_transform):
     # print("Image size:", data.GetSize())
     image_npy = sitk.GetArrayFromImage(data)
     print("Image size:", image_npy.shape)
-    tracking_data, tracking_status = get_tranform_data(data, transform=tracking_transform)
     timestamp = get_timestamp(data)
-    assert len(tracking_data) == len(tracking_status) == len(timestamp)
+    tracking_data, tracking_status = get_tranform_data(data, transform=tracking_transform, seq_length=image_npy.shape[0])
+    # print("Sequence length:", len(tracking_data), " visible frame:",  len(tracking_status), " timestamp length:", len(timestamp))
+
+    # remove the missing frames
+    tracking_data = [tracking_data[i] for i in range(len(tracking_data)) if tracking_status[i]]
+    timestamp = [timestamp[i] for i in range(len(timestamp)) if tracking_status[i]]
+    image_npy = image_npy[tracking_status, :, :]
+    tracking_status = [tracking_status[i] for i in range(len(tracking_status)) if tracking_status[i]]
+    assert len(tracking_data) == len(timestamp) == image_npy.shape[0]
     print("Sequence length:", len(tracking_data), " visible frame:", np.sum(tracking_status))
+    print("Timestamp length:", len(timestamp))
+
     tracking_data = np.stack(tracking_data, axis=0)
     # print(tracking_data.shape)
     return {'tracking_seq':tracking_data, 
@@ -52,6 +61,7 @@ def cvt_transform_sequences_from_string_to_array(sequences):
         trans = trans_str.split()
         if trans[0].find('ind') != -1:
             T = np.ones((4, 4)) * np.nan
+            new_sequences.append(T)
         else:
             T = np.zeros((4, 4))
             for i in range(4):
@@ -61,29 +71,43 @@ def cvt_transform_sequences_from_string_to_array(sequences):
             
     return new_sequences
 
-def get_tranform_data(meta_data, transform='ImageToTrackerTransform'):
+def get_tranform_data(meta_data, transform='ImageToTrackerTransform', seq_length=None):
 
     transform_sequence = []
     transform_status = []
     meta_keys = meta_data.GetMetaDataKeys()
-    for key in meta_keys:
-        if key.find(transform) != -1 and key.find('Status') == -1:
-            # print(key)
-            # print(reader.GetMetaData(f'{key}'))
+    if seq_length is not None:
+        for i in range(seq_length):
+            key = 'Seq_Frame' + str(i).zfill(4) + '_' + transform
             transform_sequence.append(meta_data.GetMetaData(f'{key}'))
             status_key = key + 'Status'
             transform_stat = meta_data.GetMetaData(f'{status_key}')
-            # print(transform_stat)
             if transform_stat == 'MISSING':
                 transform_status.append(False)
-                # print(False)
             elif transform_stat == 'OK':
                 transform_status.append(True)
-                # print(True)
+    else:
+        meta_keys = sorted(meta_keys)
+        for key in meta_keys:
+            if key.find(transform) != -1 and key.find('Status') == -1:
+                # print(key)
+                # print(reader.GetMetaData(f'{key}'))
+                transform_sequence.append(meta_data.GetMetaData(f'{key}'))
+                status_key = key + 'Status'
+                transform_stat = meta_data.GetMetaData(f'{status_key}')
+                # print(transform_stat)
+                if transform_stat == 'MISSING':
+                    transform_status.append(False)
+                    # print(False)
+                elif transform_stat == 'OK':
+                    transform_status.append(True)
+                    # print(True)
 
     assert len(transform_status) == len(transform_sequence)
     # refine the transformation
     transform_sequence = cvt_transform_sequences_from_string_to_array(transform_sequence)
+
+    assert len(transform_status) == len(transform_sequence)
     return transform_sequence, transform_status
 
 

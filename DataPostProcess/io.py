@@ -81,8 +81,7 @@ def write_igs(frames, transform, frame_timestamps, matches, output_path, sequenc
             image_status = 'Seq_Frame' + str(i).zfill(4) + '_ImageStatus'
             tracking_transform = 'Seq_Frame' + str(i).zfill(4) + '_' + FIX
             timestamp = 'Seq_Frame' + str(i).zfill(4) + '_Timestamp'
-            # print(matches)
-            # exit()
+
             if i in matches[:,0]: # have match
                 idx = np.argwhere(matches[:,0] == i)[0][0]
                 print(idx)
@@ -149,16 +148,16 @@ def write_igs(frames, transform, frame_timestamps, matches, output_path, sequenc
             metadata['UltrasoundImageType'] = 'BRIGHTNESS'
 
 
-            for i in range(seq_st, seq_end):
+            for kk in range(seq_st, seq_end):
                 
-                tracker_status = 'Seq_Frame' + str(i - seq_st).zfill(4) + '_' + FIX + 'Status'
-                image_status = 'Seq_Frame' + str(i - seq_st).zfill(4) + '_ImageStatus'
-                tracking_transform = 'Seq_Frame' + str(i - seq_st).zfill(4) + '_' + FIX
-                timestamp = 'Seq_Frame' + str(i - seq_st).zfill(4) + '_Timestamp'
+                tracker_status = 'Seq_Frame' + str(kk - seq_st).zfill(4) + '_' + FIX + 'Status'
+                image_status = 'Seq_Frame' + str(kk - seq_st).zfill(4) + '_ImageStatus'
+                tracking_transform = 'Seq_Frame' + str(kk - seq_st).zfill(4) + '_' + FIX
+                timestamp = 'Seq_Frame' + str(kk - seq_st).zfill(4) + '_Timestamp'
                 # print(matches)
                 # exit()
-                if i in matches[:,0]: # have match
-                    idx = np.argwhere(matches[:,0] == i)[0][0]
+                if kk in matches[:,0]: # have match
+                    idx = np.argwhere(matches[:,0] == kk)[0][0]
                     print(idx)
                     j = matches[idx, 1]
                     print(transform[j])
