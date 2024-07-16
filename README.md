@@ -25,6 +25,8 @@ Tool ID, Timestamp, Frame #, data columns, Tracking Quality
 
 # Installation
 
-$pip install -r requirements.txt
+pip install -r requirements.txt
 
+# Volume reconstruction
 
+The codes are referring to the source codes at https://gitlab.com/u0078867/py3dfreehandus
