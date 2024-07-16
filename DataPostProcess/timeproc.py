@@ -14,5 +14,16 @@ def timesync(timeframe1, timeframe2, threshold=1):
     return matches
 
 
-def extract_sequence():
-    pass
+def get_sequence_list(timeframe):
+    record_flags = timeframe[:,-1]
+
+    sequence_list = []
+
+    start = 0
+    for i in range(1, len(record_flags)):
+        if record_flags[i] == 0 and record_flags[i-1] == 1:
+            sequence_list.append([start, i-1])
+        elif record_flags[i] == 1 and record_flags[i-1] == 0:
+            start = i
+
+    return sequence_list

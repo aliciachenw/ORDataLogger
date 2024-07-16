@@ -20,7 +20,7 @@ def process(video_path, output_path, args):
     folder, video_name = os.path.split(video_path)
     video_name = video_name.split('.')[0]
     video_timeframe_path = os.path.join(folder, video_name + '.csv')
-    tracking_name = video_name.replace('Recording_', 'ParticipantData')
+    tracking_name = video_name.replace('Recording_', 'Tracking_')
     tracking_path = os.path.join(folder, tracking_name + '.csv')
     
     print("Video path:", video_path)
@@ -31,21 +31,19 @@ def process(video_path, output_path, args):
     frames = read_video(video_path, grayscale=True)
     # load timeframe
     _, timeframe = read_csv(video_timeframe_path)
-    _, tracking = read_csv(tracking_path) # tracking: [toolID, timestamp, frame, x, y, z, q0, qx, qy, qz, quality]
+    _, tracking = read_csv(tracking_path) # tracking: [toolID, timestamp, frame, q0, qx, qy, qz, x, y, z, quality]
 
     # timesync
-    matchs = timesync(timeframe, tracking[:, 1])
+    matchs = timesync(timeframe[:,0], tracking[:, 1])
     
     # crop the video
     if args.config is not None:
         with open(args.config, 'r') as f:
             config = json.load(f)
-        frames = crop_video(frames, config['x'], config['y'], config['w'], config['h'])
+        frames = crop_video(frames, config['crop_rectangle_origin'][0], config['crop_rectangle_origin'][1], config['crop_rectangle_size'][0], config['crop_rectangle_size'][1])
 
-        sequence_list = config['sequenceList']
-        print("Sequence list:", sequence_list)
-    else:
-        sequence_list = None
+
+    sequence_list = get_sequence_list(timeframe)
     # write the igs file
     write_igs(frames, tracking, timeframe, matchs, output_path, sequence_list)
 

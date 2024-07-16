@@ -128,7 +128,6 @@ def write_igs(frames, transform, frame_timestamps, matches, output_path, sequenc
             sequence_length = len(frames)
             FIX = 'ProbeToTrackerTransform'
             # get basic metadata
-            curr_frame = []
             metadata = {}
 
             # write headers
@@ -212,3 +211,22 @@ def cvt_transform(t):
     mat[:3, :3] = rot.as_matrix()
 
     return ' '.join([str(x) for x in mat.flatten()])
+
+
+def cvt_string_to_transform(string):
+    """
+    Convert to matrix then convert to string
+    """
+    # t: toolID, timestamp, frame, q0, qx, qy, qz, x,y,z, quality
+
+    sub_str = string.split(' ')
+    if sub_str[0] == "-nan(ind)":
+        return np.array([[np.nan, np.nan, np.nan, np.nan], [np.nan, np.nan, np.nan, np.nan], [np.nan, np.nan, np.nan, np.nan], [0, 0, 0, 1]])
+
+    mat = np.eye(4)
+    for i in range(4):
+        for j in range(4):
+            mat[i, j] = float(sub_str[i*4 + j])
+
+    return mat
+

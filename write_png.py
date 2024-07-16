@@ -24,7 +24,7 @@ def read_video(video_path, grayscale=False):
 
 if __name__ == '__main__':
     # read_video("D:/Wanwen/TORS/raw_data/OR_04182024/Surgery1/Recording_18_04_2024_08_23_33.avi", grayscale=True)
-    cap = cv2.VideoCapture('Recording_30_06_2024_10_07_27.avi')
+    cap = cv2.VideoCapture("D:/Wanwen/TORS/raw_data/OR_07112024/Surgery1/1_preretraction/Recording_11_07_2024_08_31_18.avi")
     frames = []
     counter = 0
     while cap.isOpened():
