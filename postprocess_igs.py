@@ -74,8 +74,8 @@ def main(image_path, output_path, config_path):
         else:
             metadata[image_transform_status] = 'OK'
             new_transform = calib_mat @ transform
-            new_transform = new_transform.flatten()
-            metadata[image_transform] = cvt_transform(new_transform)
+            # print(new_transform)
+            metadata[image_transform] = cvt_transform_mat_to_string(new_transform)
 
 
     new_image = sitk.GetImageFromArray(image_array.astype(np.uint8))

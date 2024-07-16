@@ -227,6 +227,11 @@ def cvt_string_to_transform(string):
     for i in range(4):
         for j in range(4):
             mat[i, j] = float(sub_str[i*4 + j])
-
+    # print(mat)
     return mat
 
+
+
+def cvt_transform_mat_to_string(mat):
+    string = ' '.join([str(x) for x in mat.flatten()])
+    return string
