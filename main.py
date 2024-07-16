@@ -62,7 +62,7 @@ if __name__ == '__main__':
         video_thread = threading.Thread(target=video_logger.capture, args=(), daemon=True)
         display_thread = threading.Thread(target=video_logger.display, args=(), daemon=True)
 
-
+    
     tracker_thread.start()
     if record_video_flag:
         video_thread.start()
@@ -71,7 +71,6 @@ if __name__ == '__main__':
     if not record_video_flag:
         while True:
             time.sleep(0.5)
-
     else:
         while not video_logger.finish:
             if video_logger.finish:
