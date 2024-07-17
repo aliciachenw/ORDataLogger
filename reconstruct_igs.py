@@ -19,8 +19,6 @@ def reconstruct_3D_US(filename, save_path='.', auto_PCA=False):
     image_seq = data_dict['image_seq']
     tracking_seq = data_dict['tracking_seq']
 
-    
-
     # initialize the reconstructor
     reconstruct_filter = Process()
     reconstruct_filter.init(tracking_seq, image_seq)

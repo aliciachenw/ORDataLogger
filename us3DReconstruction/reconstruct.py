@@ -171,14 +171,13 @@ class Process:
         voxFrames = np.array(voxFrames)
         voxFrames = voxFrames[(voxFrames >= voxFramesBounds[0]) & (voxFrames <= voxFramesBounds[1])]
         self.voxFrames = voxFrames
-
         # filter out not used data
         ivx = np.array(self.voxFrames)
         self.image_seq = self.image_seq[ivx, :, :]
         self.tracking_seq = self.tracking_seq[ivx, :, :]
         self.T_image2world_seq = self.T_image2world_seq[ivx, :, :]
         self.seq_length = self.image_seq.shape[0]
-
+        self.voxFrames = range(0, self.seq_length)
 
 
     def calculateConvPose(self, convR):

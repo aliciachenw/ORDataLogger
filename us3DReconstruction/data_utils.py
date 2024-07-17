@@ -19,14 +19,14 @@ def read_sequence(data_path, tracking_transform):
     tracking_data, tracking_status = get_tranform_data(data, transform=tracking_transform, seq_length=image_npy.shape[0])
     # print("Sequence length:", len(tracking_data), " visible frame:",  len(tracking_status), " timestamp length:", len(timestamp))
 
-    # remove the missing frames
-    tracking_data = [tracking_data[i] for i in range(len(tracking_data)) if tracking_status[i]]
-    timestamp = [timestamp[i] for i in range(len(timestamp)) if tracking_status[i]]
-    image_npy = image_npy[tracking_status, :, :]
-    tracking_status = [tracking_status[i] for i in range(len(tracking_status)) if tracking_status[i]]
-    assert len(tracking_data) == len(timestamp) == image_npy.shape[0]
-    print("Sequence length:", len(tracking_data), " visible frame:", np.sum(tracking_status))
-    print("Timestamp length:", len(timestamp))
+    # # remove the missing frames
+    # tracking_data = [tracking_data[i] for i in range(len(tracking_data)) if tracking_status[i]]
+    # timestamp = [timestamp[i] for i in range(len(timestamp)) if tracking_status[i]]
+    # image_npy = image_npy[tracking_status, :, :]
+    # tracking_status = [tracking_status[i] for i in range(len(tracking_status)) if tracking_status[i]]
+    # assert len(tracking_data) == len(timestamp) == image_npy.shape[0]
+    # print("Sequence length:", len(tracking_data), " visible frame:", np.sum(tracking_status))
+    # print("Timestamp length:", len(timestamp))
 
     tracking_data = np.stack(tracking_data, axis=0)
     # print(tracking_data.shape)

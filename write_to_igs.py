@@ -34,7 +34,7 @@ def process(video_path, output_path, args):
     _, tracking = read_csv(tracking_path) # tracking: [toolID, timestamp, frame, q0, qx, qy, qz, x, y, z, quality]
 
     # timesync
-    matchs = timesync(timeframe[:,0], tracking[:, 1])
+    matchs = timesync(timeframe[:,0], tracking[:, 1], threshold=0.1)
     
     # crop the video
     if args.config is not None:
