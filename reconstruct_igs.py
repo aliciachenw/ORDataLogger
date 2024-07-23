@@ -8,7 +8,7 @@ import numpy as np
 
 
 
-def reconstruct_3D_US(filename, save_path='.', auto_PCA=False):
+def reconstruct_3D_US(filename, save_path='.', auto_PCA=False, fill_gaps=False):
 
     # read raw image file
     filename_split = os.path.split(filename)
@@ -51,11 +51,12 @@ def reconstruct_3D_US(filename, save_path='.', auto_PCA=False):
     # Align each US image of each file in the space (will take a bit ...) -> this is to cast the sequences to volume
     reconstruct_filter.alignUSImages()
 
-    # # # Set parameters for gap filling (into the wrapped seauence)
-    reconstruct_filter.setGapFillingParameters(method='VNN', blocksN=100, blockDir='X', distTh=None)
+    if fill_gaps:
+        # # # Set parameters for gap filling (into the wrapped seauence)
+        reconstruct_filter.setGapFillingParameters(method='VNN', blocksN=100, blockDir='X', distTh=None)
 
-    # # # Fill gaps (go sipping a coffee ...)
-    reconstruct_filter.fillGaps()
+        # # # Fill gaps (go sipping a coffee ...)
+        reconstruct_filter.fillGaps()
 
     # Set properties for the vtkImageData objects that will exported just below
     # reconstruct_filter.setImageDataProperties(sxyz=(0.1, 0.1, 0.1))
@@ -69,10 +70,10 @@ if __name__ == '__main__':
     argparser.add_argument('--input', type=str, required=True)
     argparser.add_argument('--output', type=str, required=True)
     argparser.add_argument('--auto_PCA', action='store_true') # TODO: PCA generates weird results! Need to fix
-
+    argparser.add_argument('--fill_gaps', action='store_true')
     args = argparser.parse_args()
 
     input_path = args.input
     output_path = args.output
 
-    reconstruct_3D_US(input_path, output_path, args.auto_PCA)
+    reconstruct_3D_US(input_path, output_path, args.auto_PCA, args.fill_gaps)

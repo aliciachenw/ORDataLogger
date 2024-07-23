@@ -198,16 +198,26 @@ def cvt_transform(t):
     Convert to matrix then convert to string
     """
     # t: toolID, timestamp, frame, q0, qx, qy, qz, x,y,z, quality
+    if len(t) == 11: # quaternion
+        if np.isnan(t[3]):
+            return "-nan(ind) -nan(ind) -nan(ind) 0 -nan(ind) -nan(ind) -nan(ind) 0 -nan(ind) -nan(ind) -nan(ind) 0 0 0 0 1"
+        mat = np.eye(4)
+        mat[0, 3] = t[7] # x
+        mat[1, 3] = t[8] # y
+        mat[2, 3] = t[9] # z
 
-    if np.isnan(t[3]):
-        return "-nan(ind) -nan(ind) -nan(ind) 0 -nan(ind) -nan(ind) -nan(ind) 0 -nan(ind) -nan(ind) -nan(ind) 0 0 0 0 1"
-    mat = np.eye(4)
-    mat[0, 3] = t[7] # x
-    mat[1, 3] = t[8] # y
-    mat[2, 3] = t[9] # z
-
-    rot = R.from_quat(t[3:7])
-    mat[:3, :3] = rot.as_matrix()
+        rot = R.from_quat(t[3:7])
+        mat[:3, :3] = rot.as_matrix()
+    elif len(t) == 16: # rotataion matrix
+        if np.isnan(t[3]):
+            return "-nan(ind) -nan(ind) -nan(ind) 0 -nan(ind) -nan(ind) -nan(ind) 0 -nan(ind) -nan(ind) -nan(ind) 0 0 0 0 1"
+        mat = np.eye(4)
+        mat[0, 3] = t[3]
+        mat[1, 3] = t[4]
+        mat[2, 3] = t[5]
+        mat[:3, :3] = t[6:15].reshape(3, 3)
+    else:
+        raise ValueError("input string has wrong length")
 
     return ' '.join([str(x) for x in mat.flatten()])
 

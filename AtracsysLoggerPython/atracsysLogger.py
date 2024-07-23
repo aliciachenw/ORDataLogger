@@ -33,7 +33,7 @@ def get_filename():
     return csv_filepath
 
 def get_geo_filepath():
-    ROM_FILEPATH="D:/Wanwen/TORS/ORDataLogger/AtracsysLoggerPython/resources/cross_probe.ini" 
+    ROM_FILEPATH="D:/Wanwen/TORS/ORDataLogger/AtracsysLoggerPython/resources/hololenUS.ini" 
 
     return ROM_FILEPATH
 
