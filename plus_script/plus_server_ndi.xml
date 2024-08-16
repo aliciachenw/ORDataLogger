@@ -1,0 +1,72 @@
+<PlusConfiguration version="2.1">
+
+  <DataCollection StartupDelaySec="1.0" >
+    <DeviceSet 
+      Name="PlusServer: NDI Polaris tracker with passive markers" 
+      Description="Broadcasting tool tracking data through OpenIGTLink
+For NDI Polaris passive marker starting kit: Tool (8700339), Stylus (8700340), Reference (8700449)" />
+    <Device
+      Id="TrackerDevice"
+      Type="PolarisTracker"
+      ToolReferenceFrame="Tracker" >
+      <DataSources>
+        <DataSource Type="Tool" Id="Probe" RomFile="resources/HoloTORSUS_v2.rom"  />
+        <!-- <DataSource Type="Tool" Id="Reference" RomFile="NdiToolDefinitions/8700449.rom"  /> -->
+      </DataSources>
+      <OutputChannels>
+        <OutputChannel Id="TrackerStream" >
+          <DataSource Id="Probe"/>
+          <!-- <DataSource Id="Reference"/> -->
+        </OutputChannel>
+      </OutputChannels>
+    </Device>
+    <Device
+      Id="CaptureDevice"
+      Type="VirtualCapture"
+      BaseFilename="RecordingTest.igs.mha"
+      EnableFileCompression="TRUE"
+      EnableCapturingOnStart="FALSE" >
+      <InputChannels>
+        <InputChannel Id="TrackerStream" />
+      </InputChannels>
+    </Device>    
+  </DataCollection>
+
+  <CoordinateDefinitions>
+    <Transform From="StylusTip" To="Stylus"
+      Matrix="
+        1	0	0.000203823	0.0180449
+        3.31529e-09	-1	-1.62655e-05	-0.00144002
+        0.000203823	1.62655e-05	-1	-88.5321
+        0	0	0	1"
+       Error="0.554951" Date="012617_105449" />
+    <Transform From="Image" To="Probe"
+      Matrix="
+        0.0590711   0.000894685 -0.0106328  -24.0739
+        -0.000428918    -0.0561431  -0.0037136  -108.878
+        -0.0109776  0.00348657  -0.0570704  24.215
+        0   0   0   1"
+       Error="0.996154" Date="073124_153910" />
+  </CoordinateDefinitions>
+
+  <PlusOpenIGTLinkServer 
+    MaxNumberOfIgtlMessagesToSend="1"
+    MaxTimeSpentWithProcessingMs="50"
+    ListeningPort="18944"
+    SendValidTransformsOnly="false"
+    OutputChannelId="TrackerStream" >
+    <DefaultClientInfo>
+      <MessageTypes>
+        <Message Type="TRANSFORM" />
+      </MessageTypes>
+      <TransformNames>
+        <!-- <Transform Name="StylusTipToReference" /> -->
+        <!-- <Transform Name="ToolToReference" /> -->
+        <Transform Name="ProbeToTracker" />
+        <Transform Name="ImageToTracker" />
+        <!-- <Transform Name="ReferenceToTracker" /> -->
+      </TransformNames>
+    </DefaultClientInfo>
+  </PlusOpenIGTLinkServer>
+
+</PlusConfiguration>

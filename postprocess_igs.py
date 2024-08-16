@@ -20,6 +20,10 @@ def main(image_path, output_path, config_path):
     image_array = crop_arrays(image_array, config['crop_rectangle_origin'][0], config['crop_rectangle_origin'][1], config['crop_rectangle_size'][0], config['crop_rectangle_size'][1])
     image_array = resize_array(image_array, config['reshape_rectangle_size'])
 
+    # if all zero
+    if np.all(image_array == 0):
+        image_array += 128
+        
     # add transform
     calib_mat = config["ImToProbe"]
     calib_mat = np.array(calib_mat).reshape(4, 4)

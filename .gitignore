@@ -169,3 +169,5 @@ cython_debug/
 *.nii
 *.nii.gz
 atracsys/
+
+experiments/
