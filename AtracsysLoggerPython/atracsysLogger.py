@@ -80,6 +80,7 @@ class SpryTrackTrackingWrapper():
             writer_object.writerow(data_formated)
             file_object.close()
         print(data_formated, end='\r')
+        self.transform = data_formated
             
         
     def start_recording(self):

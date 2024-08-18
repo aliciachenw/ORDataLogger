@@ -14,7 +14,7 @@ import os
 import os.path
 #--------------------<Setting Parameters>----------------------
 
-USE_QUATERNIONS=True #Using quaternions by default
+USE_QUATERNIONS=False #Using quaternions by default
 SAMPLE_RATE=30 #Sampling rate for NDI frames
 
 # SAMPLE_PERIOD=int(round((1/30)*1000))
@@ -91,17 +91,22 @@ class NDITrackingWrapper():
                 data_formated=[ID_list[i],timestamp_list[i],frame_num_list[i]] #,new_dat,qual_list[i]]    
                 data_formated=data_formated+new_dat
                 data_formated.append(qual_list[i])
+
         
             with open(self.csv_filepath,'a',newline='') as file_object:
                 writer_object=csv.writer(file_object)
                 writer_object.writerow(data_formated)
                 file_object.close()
             print(data_formated, end='\r')
+            self.transform = data_formated
             
     # def update_quaternion(self):
     #     self.use_quaternions = True
     # def update_rotation(self):
     #     self.use_quaternions = False
+
+    def get_transform(self):
+        return self.transform
         
     def start_recording(self):
         self.init_csv()
