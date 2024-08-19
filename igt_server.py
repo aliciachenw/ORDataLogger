@@ -1,3 +1,8 @@
+"""
+This script is a server that sends image and tracking data to the client.
+Refer to: https://github.com/lassoan/pyigtl/blob/master/examples/example_tracked_image_server.py
+"""
+
 import pyigtl
 import numpy as np
 import time
@@ -90,13 +95,13 @@ if __name__ == '__main__':
             time.sleep(freq)
             continue
         
-        print("Connected to client!")
+        # print("Connected to client!")
 
         # Generate image
         if record_video_flag:
             image = video_logger.frame
             if org_x is not None:
-                image = image[org_x:org_x+size_w, org_y:org_y+size_h]
+                image = image[org_y:org_y+size_h, org_x:org_x+size_w]
             if reshape_w is not None:
                 image = cv2.resize(image, (reshape_w, reshape_h))
             image = image.transpose(2, 0, 1) # HxWxC -> CxHxW
