@@ -35,17 +35,19 @@ def process(video_path, output_path, args):
 
     # timesync
     matchs = timesync(timeframe[:,0], tracking[:, 1], threshold=0.1)
-    
+    # print("Matchs:", matchs)
     # crop the video
-    if args.config is not None:
-        with open(args.config, 'r') as f:
-            config = json.load(f)
-        frames = crop_video(frames, config['crop_rectangle_origin'][0], config['crop_rectangle_origin'][1], config['crop_rectangle_size'][0], config['crop_rectangle_size'][1])
+    # if args.config is not None:
+    #     with open(args.config, 'r') as f:
+    #         config = json.load(f)
+    #     frames = crop_video(frames, config['crop_rectangle_origin'][0], config['crop_rectangle_origin'][1], config['crop_rectangle_size'][0], config['crop_rectangle_size'][1])
 
 
     sequence_list = get_sequence_list(timeframe)
     # write the igs file
+    # print(sequence_list)
     write_igs(frames, tracking, timeframe, matchs, output_path, sequence_list)
+    # print("success write to", output_path)
 
 
 if __name__ == '__main__':

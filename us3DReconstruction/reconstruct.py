@@ -60,7 +60,7 @@ class Process:
         self.step = 1
         self.alignFrames = None
         self.validKineFrames = None
-        self.fillVoxMethod = 'max'
+        self.fillVoxMethod = 'avg'
 
         # Voxel array data
         self.V = None

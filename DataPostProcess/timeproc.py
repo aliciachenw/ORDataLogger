@@ -25,5 +25,8 @@ def get_sequence_list(timeframe):
             sequence_list.append([start, i-1])
         elif record_flags[i] == 1 and record_flags[i-1] == 0:
             start = i
+    
+    if record_flags[-1] == 1 and start == 0:
+        sequence_list.append([start, len(record_flags)-1])
 
     return sequence_list
