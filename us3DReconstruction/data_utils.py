@@ -30,6 +30,11 @@ def read_sequence(data_path, tracking_transform):
 
     tracking_data = np.stack(tracking_data, axis=0)
     # print(tracking_data.shape)
+
+
+    # flip x, y
+    # image_npy = np.flip(image_npy, axis=2)
+
     return {'tracking_seq':tracking_data, 
             'tracking_status': tracking_status, 
             'timestamp': timestamp, 

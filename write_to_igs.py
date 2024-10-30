@@ -54,7 +54,6 @@ if __name__ == '__main__':
     argparser = argparse.ArgumentParser()
     argparser.add_argument('--video_input', type=str, required=True)
     argparser.add_argument('--output', type=str, required=True)
-    argparser.add_argument('--config', type=str)
 
     args = argparser.parse_args()
 

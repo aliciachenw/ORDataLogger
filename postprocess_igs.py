@@ -28,6 +28,9 @@ def main(image_path, output_path, config_path):
     calib_mat = config["ImToProbe"]
     calib_mat = np.array(calib_mat).reshape(4, 4)
 
+    print("Calibration matrix:", calib_mat)
+    # exit()
+
     sequence_length = image_array.shape[0]
     # get data
     print("Image size:", image_array[0].shape)
@@ -77,7 +80,12 @@ def main(image_path, output_path, config_path):
             metadata[image_transform] = "-nan(ind) -nan(ind) -nan(ind) 0 -nan(ind) -nan(ind) -nan(ind) 0 -nan(ind) -nan(ind) -nan(ind) 0 0 0 0 1"
         else:
             metadata[image_transform_status] = 'OK'
-            new_transform = transform @ calib_mat
+            print(transform)
+
+            new_transform = np.matmul(transform, calib_mat)
+            # print(new_transform)
+            print(np.linalg.det(new_transform), np.linalg.det(calib_mat), np.linalg.det(transform))
+            # new_transform = calib_mat @ transform
             # print(new_transform)
             metadata[image_transform] = cvt_transform_mat_to_string(new_transform)
 
