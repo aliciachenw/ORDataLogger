@@ -53,8 +53,11 @@ def exit_with_error(error, tracking_system):
 
 class SpryTrackTrackingWrapper():
 
-    def __init__(self):
-        self.csv_filepath = get_filename()
+    def __init__(self, filename=None):
+        if filename is not None:
+            self.csv_filepath = filename
+        else:
+            self.csv_filepath = get_filename()
         self.geo_filepath = get_geo_filepath()
         self.use_quaternions = USE_QUATERNIONS
         self.tracking = False

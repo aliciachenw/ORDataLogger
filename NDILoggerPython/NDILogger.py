@@ -40,8 +40,11 @@ def get_rom_filepath():
 
 class NDITrackingWrapper():
 
-    def __init__(self):
-        self.csv_filepath = get_filename()
+    def __init__(self, filename=None):
+        if filename is not None:
+            self.csv_filepath = filename
+        else:
+            self.csv_filepath = get_filename()
         self.rom_filepath = get_rom_filepath()
         self.use_quaternions = USE_QUATERNIONS
         self.tracking = False

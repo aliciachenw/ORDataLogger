@@ -18,8 +18,8 @@ if __name__ == '__main__':
     #Creates the GUI
     
     # init
-    ndi_tracker_logger = NDITrackingWrapper()
-    sprytrack_logger = SpryTrackTrackingWrapper()
+    ndi_tracker_logger = NDITrackingWrapper('ndi_tracker.csv')
+    sprytrack_logger = SpryTrackTrackingWrapper('sprytrack.csv')
 
 
     ndi_tracker_logger.start_recording()
