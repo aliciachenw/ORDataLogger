@@ -18,22 +18,17 @@ if __name__ == '__main__':
     #Creates the GUI
     
     # init
-    ndi_tracker_logger = NDITrackingWrapper('ndi_tracker.csv')
-    sprytrack_logger = SpryTrackTrackingWrapper('sprytrack.csv')
+    ndi_tracker_logger = NDITrackingWrapper('ndi_tracker_calib.csv', use_thread=False)
+    sprytrack_logger = SpryTrackTrackingWrapper('sprytrack_calib.csv', use_thread=False)
 
 
     ndi_tracker_logger.start_recording()
     sprytrack_logger.start_recording()
 
-    ndi_tracker_thread = threading.Thread(target=ndi_tracker_logger.recording, args=(), daemon=True)
-    sprytrack_thread = threading.Thread(target=sprytrack_logger.recording, args=(), daemon=True)
 
-    ndi_tracker_thread.start()
-    sprytrack_thread.start()
+    for i in range(300):
+        ndi_tracker_logger.recording()
+        sprytrack_logger.recording()
+        time.sleep(1/30)
 
-    time.sleep(10) # run for 10 seconds
-    
-    ndi_tracker_thread.join()
-    sprytrack_thread.join()
-    ndi_tracker_logger.end_recording()
-    sprytrack_logger.end_recording()
+    print("End recording")

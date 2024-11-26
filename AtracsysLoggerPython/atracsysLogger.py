@@ -33,7 +33,7 @@ def get_filename():
     return csv_filepath
 
 def get_geo_filepath():
-    ROM_FILEPATH="D:/Wanwen/TORS/ORDataLogger/AtracsysLoggerPython/resources/hololenUS.ini" 
+    ROM_FILEPATH="D:/Wanwen/TORS/ORDataLogger/AtracsysLoggerPython/resources/cross_probe.ini" 
 
     return ROM_FILEPATH
 
@@ -53,7 +53,7 @@ def exit_with_error(error, tracking_system):
 
 class SpryTrackTrackingWrapper():
 
-    def __init__(self, filename=None):
+    def __init__(self, filename=None, use_thread=True):
         if filename is not None:
             self.csv_filepath = filename
         else:
@@ -61,6 +61,7 @@ class SpryTrackTrackingWrapper():
         self.geo_filepath = get_geo_filepath()
         self.use_quaternions = USE_QUATERNIONS
         self.tracking = False
+        self.use_thread = use_thread
 
     def init_csv(self):
         #Creates the csv file and the headings
@@ -125,7 +126,26 @@ class SpryTrackTrackingWrapper():
         
     def recording(self):
         #Setting Up NDI Device and Tracking
-        while self.tracking:
+        if self.use_thread: # run in thread
+            while self.tracking:
+                self.tracker.get_last_frame(self.frame)
+                data_formated = []
+                timestamp = datetime.now().timestamp()
+                self.frame_num += 1
+                for i, marker in enumerate(self.frame.markers):
+                    tool_id = marker.geometry_id
+                    marker_dat = [marker.position[0], marker.position[1], marker.position[2],\
+                                marker.rotation[0][0], marker.rotation[0][1], marker.rotation[0][2],\
+                                    marker.rotation[1][0],marker.rotation[1][1], marker.rotation[1][2],
+                                    marker.rotation[2][0], marker.rotation[2][1], marker.rotation[2][2] ]
+                    data_formated += [tool_id, timestamp, self.frame_num] + marker_dat + [1]
+                if len(data_formated) == 0:
+                    data_formated = [0, timestamp, self.frame_num, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, 0]
+                self.save_dat(data_formated)
+
+                
+                time.sleep(SAMPLE_PERIOD)
+        else:
             self.tracker.get_last_frame(self.frame)
             data_formated = []
             timestamp = datetime.now().timestamp()
@@ -133,12 +153,12 @@ class SpryTrackTrackingWrapper():
             for i, marker in enumerate(self.frame.markers):
                 tool_id = marker.geometry_id
                 marker_dat = [marker.position[0], marker.position[1], marker.position[2],\
-                              marker.rotation[0][0], marker.rotation[0][1], marker.rotation[0][2],\
-                                 marker.rotation[1][0],marker.rotation[1][1], marker.rotation[1][2],
-                                  marker.rotation[2][0], marker.rotation[2][1], marker.rotation[2][2] ]
+                            marker.rotation[0][0], marker.rotation[0][1], marker.rotation[0][2],\
+                                marker.rotation[1][0],marker.rotation[1][1], marker.rotation[1][2],
+                                marker.rotation[2][0], marker.rotation[2][1], marker.rotation[2][2] ]
                 data_formated += [tool_id, timestamp, self.frame_num] + marker_dat + [1]
             if len(data_formated) == 0:
                 data_formated = [0, timestamp, self.frame_num, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, 0]
             self.save_dat(data_formated)
-            time.sleep(SAMPLE_PERIOD)
-     
+
+                

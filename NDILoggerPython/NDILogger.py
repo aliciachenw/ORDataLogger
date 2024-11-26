@@ -32,7 +32,7 @@ def get_filename():
     return csv_filepath
 
 def get_rom_filepath():
-    ROM_FILEPATH="NDILoggerPython/resources/HoloTORSUS_v2.rom" #Default .rom filepath
+    ROM_FILEPATH="NDILoggerPython/resources/cross_probe.rom" #Default .rom filepath
 
     return ROM_FILEPATH
 
@@ -40,7 +40,7 @@ def get_rom_filepath():
 
 class NDITrackingWrapper():
 
-    def __init__(self, filename=None):
+    def __init__(self, filename=None, use_thread=True):
         if filename is not None:
             self.csv_filepath = filename
         else:
@@ -48,6 +48,7 @@ class NDITrackingWrapper():
         self.rom_filepath = get_rom_filepath()
         self.use_quaternions = USE_QUATERNIONS
         self.tracking = False
+        self.use_thread = use_thread
 
     def init_csv(self):
         #Creates the csv file and the headings
@@ -132,8 +133,13 @@ class NDITrackingWrapper():
         
     def recording(self):
         #Setting Up NDI Device and Tracking
-        while self.tracking:
+        if self.use_thread:
+            while self.tracking:
+                NDI_dat=self.tracker.get_frame()
+                self.save_dat(NDI_dat)
+                time.sleep(SAMPLE_PERIOD)
+        else:
             NDI_dat=self.tracker.get_frame()
             self.save_dat(NDI_dat)
-            time.sleep(SAMPLE_PERIOD)
+
      
